@@ -2491,8 +2491,7 @@ const sleep = (seconds) => __awaiter(void 0, void 0, void 0, function* () { retu
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const token = core.getInput('token', { required: true });
-        const courseId = core.getInput('course-id', { required: true });
-        const assignmentId = core.getInput('assignment-id', { required: true });
+        const bookId = core.getInput('book-id', { required: true });
         const zip = core.getInput('zip', { required: true });
         const domain = core.getInput('domain', { required: false });
         const changelog = core.getInput('changelog', { required: false });
@@ -2508,7 +2507,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log('API call');
         const headers = Object.assign(postData.getHeaders(), authHeaders);
         headers['Content-Length'] = yield postData.getLengthSync();
-        const res = yield api(`/api/v1/courses/${courseId}/assignments/${assignmentId}/versions`, postData, headers);
+        const res = yield api(`/api/v1/books/${bookId}/versions`, postData, headers);
         const taskUrl = res['taskUri'];
         if (!taskUrl) {
             throw new Error('task Url not found');
@@ -2518,10 +2517,13 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             yield sleep(10);
             const status = yield getJson(taskUrl, undefined, authHeaders);
             if (status['done']) {
+                if (status['error']) {
+                    throw new Error(status['error']);
+                }
                 break;
             }
-            console.log(status);
         }
+        console.log('publish Completed');
     }
     catch (error) {
         core.setFailed(error.message);
