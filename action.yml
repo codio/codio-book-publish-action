@@ -1,0 +1,25 @@
+# action.yml
+name: 'Codio Book publish'
+description: 'Publishes a new version of Book'
+inputs:
+  token:
+    description: 'API access token'
+    required: true
+    default: ''
+  assignment-id:
+    description: 'Book Id'
+    required: true
+    default: ''
+  zip:
+    description: 'Path to the zipped'
+    required: true
+    default: ''
+  changelog:
+    description: 'no message'
+  domain:
+    description: 'API Domain'
+    required: false
+    default: 'codio.com'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
