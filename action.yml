@@ -6,7 +6,7 @@ inputs:
     description: 'API access token'
     required: true
     default: ''
-  assignment-id:
+  book-id:
     description: 'Book Id'
     required: true
     default: ''
